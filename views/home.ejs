@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>short-url</title>
+    <style>
+      body {
+        background-color: rgb(233, 222, 207);
+      }
+      h1 {
+        color: rgb(18, 18, 18);
+        text-align: center;
+        font-size: 50px;
+      }
+      .wholeForm {
+        text-align: center;
+      }
+      .center-table-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically, optional */
+      }
+
+      input[type="text"] {
+        width: 50%; /* To accommodate padding and border */
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      button {
+        width: 20%;
+        padding: 10px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      label {
+        color: rgb(217, 24, 24);
+        font-size: x-large;
+      }
+
+      .center-text {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+        font-size: 25px;
+      }
+
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL - Shortener</h1>
+    <div class="wholeForm">
+      <form method="POST" action="/url" class="formatg">
+        <label>Enter your Original URL</label>
+        <input type="text" name="url" placeholder="https://example.com" class="input" />
+        <button type="submit">Generate</button>
+      </form>
+    </div>
+    <% if (locals.id) { %>
+    <p class="center-text">URL Generated: http://localhost:8001/url/<%= id %></p>
+    <% } %>
+    <div class="center-table-container">
+      <% if (locals.urls) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>ShortId</th>
+            <th>Redirect</th>
+            <th>Clicks</th>
+            <th>Visit History</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= url.shortId %></td>
+            <td><%= url.redirectURL %></td>
+            <td><%= url.visitHistory.length %></td>
+            <td>
+              <ul>
+                <% url.visitHistory.forEach(visit => { %>
+                <li><%= new Date(visit.timestamp).toLocaleString() %></li>
+                <% }) %>
+              </ul>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>
